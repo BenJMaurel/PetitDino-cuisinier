@@ -9,6 +9,7 @@ import {
   ShoppingBasket, 
   ChevronRight, 
   Trash2, 
+  ChefHat, 
   Users, 
   CheckCircle2, 
   Circle,
@@ -169,12 +170,12 @@ export default function App() {
       <header className="h-[70px] bg-white border-b-3 border-primary px-8 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2 text-2xl font-black text-primary uppercase italic">
           {/* Custom Dino Logo */}
-          <img src="/dino.png" alt="Icône Dino" className="h-10 w-auto" /> 
+          <img src="/dino.png" alt="Dino Icon" className="h-10 w-auto" /> 
           <span>LePetitDino cuisinier</span>
         </div>
         
         <div className="hidden md:block text-xs font-bold uppercase tracking-widest text-ink-light">
-          Planificateur • {recipes.length} Recettes Disponibles
+          Planificateur • {recipes.length} Recettes dispo
         </div>
 
         <button 
@@ -189,12 +190,12 @@ export default function App() {
         <div className="space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div className="flex flex-col gap-1">
-              <h2 className="text-3xl font-extrabold tracking-tight">Choisi tes <span className="text-primary italic">Recettes</span></h2>
-              <p className="text-ink-light text-sm max-w-lg">Choisi tes recettes pour la semaine et on s'occupe des courses !</p>
+              <h2 className="text-3xl font-extrabold tracking-tight">Choisis tes <span className="text-primary italic">Recettes</span></h2>
+              <p className="text-ink-light text-sm max-w-lg">Choisis tes recettes pour la semaine et on s'occupe de la liste de courses !</p>
             </div>
             <button 
               onClick={() => setIsCreateModalOpen(true)}
-              className="px-6 py-3 bg-stone-900 text-white rounded-2xl font-black uppercase text-sm shadow-[0_4px_0_var(--color-ink)] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
+              className="px-6 py-3 bg-stone-900 text-white rounded-2xl font-black uppercase text-sm shadow-[0_4px_0_#444] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
             >
               <Plus size={18} />
               Nouvelle Recette
@@ -245,7 +246,7 @@ export default function App() {
                             ? 'bg-primary border-primary text-white shadow-lg' 
                             : 'bg-white border-primary text-primary hover:bg-primary/5 shadow-sm opacity-100'
                         }`}
-                        title={isSelected ? "Retirer du plan" : "Ajouter au plan"}
+                        title={isSelected ? "Retirer la recette" : "Ajouter la recette"}
                       >
                         {isSelected ? <Check size={20} strokeWidth={3} /> : <Plus size={20} />}
                       </button>
@@ -255,7 +256,7 @@ export default function App() {
                           setEditingRecipe(recipe);
                         }}
                         className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white text-ink-light hover:text-primary rounded-xl transition-all shadow-sm opacity-100 pointer-events-auto"
-                        title="Modifier la recette"
+                        title="Modifier"
                       >
                         <Edit size={18} />
                       </button>
@@ -272,7 +273,7 @@ export default function App() {
                             onClick={() => setViewingInstructions(recipe)}
                             className="text-[10px] font-black uppercase tracking-tighter text-primary border-b border-primary/30 hover:border-primary transition-all"
                           >
-                            Voir les étapes
+                            Voir étapes
                           </button>
                         )}
                       </div>
@@ -309,10 +310,10 @@ export default function App() {
               <h2 className="text-xl font-black tracking-tight text-white">Liste de courses</h2>
               {selections.length > 0 ? (
                 <p className="text-xs font-bold opacity-80 mt-1 uppercase tracking-wider text-white">
-                  {selections.length} Recettes • {totalPortions} Portions au Total
+                  {selections.length} Recettes • {totalPortions} Portions
                 </p>
               ) : (
-                <p className="text-xs font-bold opacity-80 mt-1 uppercase tracking-wider text-white">Commence par choisir tes recettes pardi</p>
+                <p className="text-xs font-bold opacity-80 mt-1 uppercase tracking-wider text-white">Commence par choisir des recettes</p>
               )}
             </div>
 
@@ -353,7 +354,7 @@ export default function App() {
                 className="w-full bg-primary text-white p-4 rounded-[16px] font-black text-lg uppercase shadow-[0_4px_0_var(--color-ink)] active:translate-y-1 active:shadow-none transition-all disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {generating && <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                {groceryList.length > 0 ? 'Mettre à jour la liste' : 'Générer la liste'}
+                {groceryList.length > 0 ? 'Mettre à jour' : 'Générer la liste'}
               </button>
             </div>
           </aside>
@@ -493,7 +494,7 @@ export default function App() {
               </div>
               <div className="p-8 overflow-y-auto">
                 <div className="whitespace-pre-wrap font-medium leading-relaxed text-ink/80 text-sm">
-                  {viewingInstructions.instructions || "Aucune instruction pour cette recette."}
+                  {viewingInstructions.instructions || "Aucune instruction fournie pour cette recette."}
                 </div>
               </div>
               <div className="p-6 bg-stone-50 border-t border-stone-100 shrink-0">
@@ -550,11 +551,11 @@ function RecipeFormModal({
         setFormData({ ...formData, image_url: data.imageUrl });
       } else {
         const errorData = await response.json();
-        alert(errorData.error || 'Erreur lors du téléchargement');
+        alert(errorData.error || 'Erreur lors de l\'envoi');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Erreur lors du téléchargement');
+      alert('Erreur lors de l\'envoi');
     } finally {
       setUploading(false);
     }
@@ -563,7 +564,7 @@ function RecipeFormModal({
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = 'Le nom est requis';
-    if (formData.base_portions < 1) newErrors.portions = 'Minimum 1 portion';
+    if (formData.base_portions < 1) newErrors.portions = 'Minimum 1';
     
     formData.ingredients.forEach((ing, idx) => {
       if (!ing.name.trim()) newErrors[`ing-${idx}-name`] = 'Requis';
@@ -638,14 +639,14 @@ function RecipeFormModal({
               {errors.name && <p className="text-[10px] text-primary font-bold uppercase">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-ink-light">Image de la recette</label>
+              <label className="text-xs font-bold uppercase tracking-widest text-ink-light">Image (URL ou Fichier)</label>
               <div className="flex gap-2">
                 <input 
                   type="text" 
                   value={formData.image_url}
                   onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                   className="flex-1 p-4 bg-stone-100 rounded-2xl border-2 border-transparent font-bold focus:outline-none focus:border-primary transition-colors text-xs"
-                  placeholder="URL (Unsplash, etc.)"
+                  placeholder="URL ou clic à droite ➔"
                 />
                 <label className="shrink-0 flex items-center justify-center p-4 bg-secondary text-white rounded-2xl cursor-pointer hover:bg-secondary/80 transition-all shadow-sm">
                   {uploading ? (
@@ -733,7 +734,7 @@ function RecipeFormModal({
                   <button 
                     onClick={() => removeIngredient(idx)}
                     className="p-3 text-ink-light hover:text-primary transition-colors"
-                    title="Remove Ingredient"
+                    title="Retirer"
                   >
                     <Trash2 size={20} />
                   </button>

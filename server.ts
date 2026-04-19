@@ -1,7 +1,9 @@
 import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import cors from 'cors';
+import multer from 'multer';
 import db from './db';
 
 async function startServer() {
@@ -11,7 +13,47 @@ async function startServer() {
   app.use(express.json());
   app.use(cors());
 
+  // Set up uploads directory
+  const uploadsDir = path.join(process.cwd(), 'uploads');
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+  }
+
+  // Serve uploads statically
+  app.use('/uploads', express.static(uploadsDir));
+
+  // Configure Multer for local storage
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+  });
+
+  const upload = multer({ 
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only images are allowed'));
+      }
+    }
+  });
+
   // API Endpoints
+  app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    const imageUrl = `/uploads/${req.file.filename}`;
+    res.json({ imageUrl });
+  });
+
   app.get('/api/recipes', (req, res) => {
     try {
       const recipes = db.prepare(`
