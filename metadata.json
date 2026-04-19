@@ -1,0 +1,6 @@
+{
+  "name": "Meal Planner & Grocery Aggregator",
+  "description": "A lightweight tool to plan meals, adjust portions, and generate aggregated grocery lists from recipes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

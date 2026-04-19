@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    
+    /* Nouvelles couleurs thématiques douces et 'dino-ish' */
+    --color-primary: #A9DFBF; /* Vert plus doux */
+    --color-secondary: #F7DC6F; /* Jaune plus doux */
+    --color-accent: #EB984E; /* Orange plus doux */
+    --color-ink: #4D5656; /* Gris foncé plus doux */
+    --color-ink-light: #808B96; /* Gris moyen plus doux */
+    --color-page-bg: #FAF0E6; /* Beige pêche chaud */
+    --color-border-subtle: #E0D5C1; /* Bordure pierre plus douce */
+  }
+
+@layer base {
+  body {
+    @apply bg-page-bg text-ink font-sans;
+  }
+}
+

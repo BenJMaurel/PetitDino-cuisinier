@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      # Volume binding for hot-reloading
+      - .:/app
+      # Anonymous volume for node_modules to avoid host system conflicts
+      - /app/node_modules
+    environment:
+      # Ensure hot-reload watches file changes correctly through the Docker boundary
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+    restart: always
